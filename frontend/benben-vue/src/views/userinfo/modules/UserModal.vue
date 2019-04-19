@@ -107,7 +107,7 @@
   import Vue from 'vue'
 
   export default {
-    name: "UserInfoModal",
+    name: "UserModal",
     data () {
       return {
         title:"操作",
@@ -138,8 +138,8 @@
         },
         headers:{},
         url: {
-          add: "/user/userInfo/add",
-          edit: "/user/userInfo/edit",
+          add: "/user/add",
+          edit: "/user/edit",
           fileUpload:doMian+"sys/common/upload",
         },
       }
