@@ -99,19 +99,19 @@
     <!-- table区域-end -->
 
     <!-- 表单区域 -->
-    <userInfo-modal ref="modalForm" @ok="modalFormOk"></userInfo-modal>
+    <user-modal ref="modalForm" @ok="modalFormOk"></user-modal>
   </a-card>
 </template>
 
 <script>
-  import UserInfoModal from './modules/UserInfoModal'
+  import UserModal from './modules/UserModal'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 
   export default {
-    name: "UserInfoList",
+    name: "UserList",
     mixins:[JeecgListMixin],
     components: {
-      UserInfoModal
+      UserModal
     },
     data () {
       return {
@@ -205,11 +205,11 @@
           }
         ],
 		url: {
-          list: "/user/userInfo/list",
-          delete: "/user/userInfo/delete",
-          deleteBatch: "/user/userInfo/deleteBatch",
-          exportXlsUrl: "user/userInfo/exportXls",
-          importExcelUrl: "user/userInfo/importExcel",
+          list: "/user/list",
+          delete: "/user/delete",
+          deleteBatch: "/user/deleteBatch",
+          exportXlsUrl: "user/exportXls",
+          importExcelUrl: "user/importExcel",
        },
     }
   },
