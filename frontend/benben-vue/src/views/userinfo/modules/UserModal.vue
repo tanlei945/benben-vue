@@ -7,7 +7,7 @@
     @ok="handleOk"
     @cancel="handleCancel"
     cancelText="关闭">
-    
+
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
 
@@ -35,6 +35,12 @@
           label="密码">
           <a-input placeholder="请输入密码" v-decorator="['password', validatorRules.password ]" />
         </a-form-item>
+        <a-form-item label="用户类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-select v-decorator="[ 'userType', {}]" placeholder="请选择用户类型">
+            <a-select-option :value="0">普通用户</a-select-option>
+            <a-select-option :value="1">骑手</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -47,12 +53,6 @@
           label="手机号">
           <a-input placeholder="请输入手机号" v-decorator="['mobile', validatorRules.mobile ]" />
         </a-form-item>
-<!--        <a-form-item-->
-<!--          :labelCol="labelCol"-->
-<!--          :wrapperCol="wrapperCol"-->
-<!--          label="头像">-->
-<!--          <a-input placeholder="请输入头像" v-decorator="['avatar', validatorRules.avatar ]" />-->
-<!--        </a-form-item>-->
 
         <a-form-item label="头像" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-upload
@@ -65,7 +65,7 @@
             :beforeUpload="beforeUpload"
             @change="handleChange"
           >
-            <img v-if="validatorRules.avatar" :src="validatorRules.src" alt="头像" style="height:104px;max-width:300px"/>
+            <img v-if="model.avatar" :src="getAvatarView()" alt="头像" style="height:104px;max-width:300px"/>
             <div v-else>
               <a-icon :type="uploadLoading ? 'loading' : 'plus'" />
               <div class="ant-upload-text">上传</div>
@@ -73,7 +73,7 @@
           </a-upload>
         </a-form-item>
 
-        <a-form-item label="性别（1：男 2：女）" :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <a-form-item label="性别" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-select v-decorator="[ 'sex', {}]" placeholder="请选择性别">
             <a-select-option :value="1">男</a-select-option>
             <a-select-option :value="2">女</a-select-option>
@@ -92,7 +92,7 @@
           label="格言">
           <a-input placeholder="请输入格言" v-decorator="['bio', validatorRules.bio ]" />
         </a-form-item>
-		
+
       </a-form>
     </a-spin>
   </a-modal>
@@ -100,7 +100,6 @@
 
 <script>
   import { httpAction } from '@/api/manage'
-  import {doMian} from '@/api/api'
   import pick from 'lodash.pick'
   import moment from "moment"
   import { ACCESS_TOKEN } from "@/store/mutation-types"
@@ -121,26 +120,28 @@
           xs: { span: 24 },
           sm: { span: 16 },
         },
-
+        uploadLoading:false,
         confirmLoading: false,
         form: this.$form.createForm(this),
         validatorRules:{
-        username:{rules: [{ required: true, message: '请输入用户名!' }]},
-        realname:{rules: [{ required: true, message: '请输入真实姓名!' }]},
-        nickname:{rules: [{ required: true, message: '请输入昵称!' }]},
-        password:{rules: [{ required: true, message: '请输入密码!' }]},
-        email:{rules: [{ required: true, message: '请输入电子邮箱!' }]},
-        mobile:{rules: [{ required: true, message: '请输入手机号!' }]},
-        avatar:{rules: [{ required: true, message: '请输入头像!' }]},
-        sex:{rules: [{ required: true, message: '请输入性别（1：男 2：女）!' }]},
-        bio:{rules: [{ required: true, message: '请输入格言!' }]},
+          userType:{rules: [{ required: true, message: '请输入用户类型!' }]},
+          username:{rules: [{ required: true, message: '请输入用户名!' }]},
+          realname:{rules: [{ required: true, message: '请输入真实姓名!' }]},
+          nickname:{rules: [{ required: true, message: '请输入昵称!' }]},
+          password:{rules: [{ required: true, message: '请输入密码!' }]},
+          email:{rules: [{ required: true, message: '请输入电子邮箱!' }]},
+          mobile:{rules: [{ required: true, message: '请输入手机号!' }]},
+          avatar:{rules: [{ required: true, message: '请输入头像!' }]},
+          sex:{rules: [{ required: true, message: '请输入性别（1：男 2：女）!' }]},
+          bio:{rules: [{ required: true, message: '请输入格言!' }]},
           src:"",
         },
         headers:{},
         url: {
           add: "/user/add",
           edit: "/user/edit",
-          fileUpload:doMian+"sys/common/upload",
+          fileUpload: window._CONFIG['domianURL']+"/sys/common/upload",
+          imgerver: window._CONFIG['domianURL']+"/sys/common/view",
         },
       }
     },
@@ -165,8 +166,8 @@
         this.model = Object.assign({}, record);
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'username','realname','nickname','password','email','mobile','avatar','sex','bio'))
-		  //时间格式化
+          this.form.setFieldsValue(pick(this.model,'username','realname','nickname','password','userType','email','mobile','avatar','sex','bio'))
+          //时间格式化
           this.form.setFieldsValue({birthday:this.model.birthday?moment(this.model.birthday):null})
         });
 
@@ -188,7 +189,7 @@
               method = 'post';
             }else{
               httpurl+=this.url.edit;
-               method = 'put';
+              method = 'put';
             }
             let formData = Object.assign(this.model, values);
             //时间格式化
@@ -240,6 +241,9 @@
             this.$message.warning(response.message);
           }
         }
+      },
+      getAvatarView(){
+        return this.url.imgerver +"/"+ this.model.avatar;
       },
     }
   }

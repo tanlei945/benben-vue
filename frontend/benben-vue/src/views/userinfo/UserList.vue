@@ -11,18 +11,18 @@
               <a-input placeholder="请输入用户名" v-model="queryParam.username"></a-input>
             </a-form-item>
           </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
-            <a-form-item label="真实姓名">
-              <a-input placeholder="请输入真实姓名" v-model="queryParam.realname"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="昵称">
-              <a-input placeholder="请输入昵称" v-model="queryParam.nickname"></a-input>
-            </a-form-item>
-          </a-col>
-        </template>
+          <template v-if="toggleSearchStatus">
+            <a-col :md="6" :sm="8">
+              <a-form-item label="真实姓名">
+                <a-input placeholder="请输入真实姓名" v-model="queryParam.realname"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="8">
+              <a-form-item label="昵称">
+                <a-input placeholder="请输入昵称" v-model="queryParam.nickname"></a-input>
+              </a-form-item>
+            </a-col>
+          </template>
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -71,9 +71,10 @@
         :loading="loading"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange">
+
         <template slot="avatarslot" slot-scope="text, record, index">
           <div class="anty-img-wrap">
-            <img :src="record.avatar"/>
+            <img :src="getAvatarView(record.avatar)"/>
           </div>
 
         </template>
@@ -127,76 +128,90 @@
             customRender:function (t,r,index) {
               return parseInt(index)+1;
             }
-           },
-		   {
+          },
+          {
             title: '用户名',
             align:"center",
             dataIndex: 'username'
-           },
-		   {
+          },
+          {
             title: '真实姓名',
             align:"center",
             dataIndex: 'realname'
-           },
-		   {
+          },
+          {
             title: '昵称',
             align:"center",
             dataIndex: 'nickname'
-           },
-		   {
+          },
+          {
+            title: '用户类型',
+            align:"center",
+            dataIndex: 'userType',
+            customRender:function (text) {
+              if(text==0){
+                return "普通用户";
+              }else if(text==1){
+                return "骑手";
+              }else{
+                return text;
+              }
+            }
+          },
+          {
             title: '电子邮箱',
             align:"center",
             dataIndex: 'email'
-           },
-		   {
+          },
+          {
             title: '手机号',
             align:"center",
             dataIndex: 'mobile'
-           },
-		   {
+          },
+          {
             title: '头像',
             align:"center",
             dataIndex: 'avatar',
             scopedSlots:{customRender:"avatarslot"}
-           },
-		   {
-            title: '性别（1：男 2：女）',
+          },
+          {
+            title: '性别',
             align:"center",
             dataIndex: 'sex',
-           customRender:function (text) {
-             if(text==1){
-               return "男";
-             }else if(text==2){
-               return "女";
-             }else{
-               return text;
-             }
-           }
-           },
-		   {
+            customRender:function (text) {
+              if(text==1){
+                return "男";
+              }else if(text==2){
+                return "女";
+              }else{
+                return text;
+              }
+            }
+          },
+          {
             title: '余额',
             align:"center",
-            dataIndex: 'money'
-           },
-		   {
+            dataIndex: 'userMoney'
+          },
+          {
             title: '积分',
             align:"center",
             dataIndex: 'score'
-           },
-		   {
-            title: '状态(1：正常  2：冻结 ）',
+          },
+          {
+            title: '状态',
             align:"center",
             dataIndex: 'status',
-           customRender:function (text) {
-             if(text==1){
-               return "正常";
-             }else if(text==2){
-               return "冻结";
-             }else{
-               return text;
-             }
-           }
-           },
+            customRender:function (text) {
+              if(text==1){
+                return "正常";
+              }else if(text==2){
+                return "冻结";
+              }else{
+                return text;
+              }
+            }
+          },
           {
             title: '操作',
             dataIndex: 'action',
@@ -204,27 +219,30 @@
             scopedSlots: { customRender: 'action' },
           }
         ],
-		url: {
+        url: {
+          imgerver: window._CONFIG['domianURL'] + "/sys/common/view",
           list: "/user/list",
           delete: "/user/delete",
           deleteBatch: "/user/deleteBatch",
           exportXlsUrl: "user/exportXls",
           importExcelUrl: "user/importExcel",
-       },
-    }
-  },
-  computed: {
-    importExcelUrl: function(){
-      return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
-    }
-  },
+        },
+      }
+    },
+    computed: {
+      importExcelUrl: function(){
+        return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+      }
+    },
     methods: {
-     
+      getAvatarView: function (avatar) {
+        return this.url.imgerver + "/" + avatar;
+      },
     }
   }
 </script>
 <style lang="less" scoped>
-/** Button按钮间距 */
+  /** Button按钮间距 */
   .ant-btn {
     margin-left: 3px
   }
