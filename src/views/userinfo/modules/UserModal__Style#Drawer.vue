@@ -1,16 +1,16 @@
 <template>
   <a-drawer
-      :title="title"
-      :width="800"
-      placement="right"
-      :closable="false"
-      @close="close"
-      :visible="visible"
+    :title="title"
+    :width="800"
+    placement="right"
+    :closable="false"
+    @close="close"
+    :visible="visible"
   >
 
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-      
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -203,7 +203,7 @@
           label="wxId">
           <a-input placeholder="请输入wxId" v-decorator="['wxId', {}]" />
         </a-form-item>
-		
+
       </a-form>
     </a-spin>
     <a-button type="primary" @click="handleOk">确定</a-button>
@@ -235,32 +235,32 @@
         confirmLoading: false,
         form: this.$form.createForm(this),
         validatorRules:{
-        groupId:{rules: [{ required: true, message: '请输入组别ID!' }]},
-        username:{rules: [{ required: true, message: '请输入用户名!' }]},
-        realname:{rules: [{ required: true, message: '请输入真实姓名!' }]},
-        nickname:{rules: [{ required: true, message: '请输入昵称!' }]},
-        password:{rules: [{ required: true, message: '请输入密码!' }]},
-        salt:{rules: [{ required: true, message: '请输入密码盐!' }]},
-        email:{rules: [{ required: true, message: '请输入电子邮箱!' }]},
-        mobile:{rules: [{ required: true, message: '请输入手机号!' }]},
-        avatar:{rules: [{ required: true, message: '请输入头像!' }]},
-        level:{rules: [{ required: true, message: '请输入等级!' }]},
-        sex:{rules: [{ required: true, message: '请输入性别  0/男,1/女!' }]},
-        bio:{rules: [{ required: true, message: '请输入格言!' }]},
-        money:{rules: [{ required: true, message: '请输入余额!' }]},
-        score:{rules: [{ required: true, message: '请输入积分!' }]},
-        successIons:{rules: [{ required: true, message: '请输入连续登录天数!' }]},
-        maxsuccessIons:{rules: [{ required: true, message: '请输入最大连续登录天数!' }]},
-        prevTime:{rules: [{ required: true, message: '请输入上次登录时间!' }]},
-        loginTime:{rules: [{ required: true, message: '请输入登录时间!' }]},
-        loginip:{rules: [{ required: true, message: '请输入登录IP!' }]},
-        loginfailure:{rules: [{ required: true, message: '请输入失败次数!' }]},
-        joinip:{rules: [{ required: true, message: '请输入加入IP!' }]},
-        token:{rules: [{ required: true, message: '请输入Token!' }]},
-        status:{rules: [{ required: true, message: '请输入状态(1：正常  2：冻结 ）!' }]},
-        delFlag:{rules: [{ required: true, message: '请输入删除状态（0，正常，1已删除）!' }]},
-        verification:{rules: [{ required: true, message: '请输入验证!' }]},
-        userId:{rules: [{ required: true, message: '请输入userId!' }]},
+          groupId:{rules: [{ required: true, message: '请输入组别ID!' }]},
+          username:{rules: [{ required: true, message: '请输入用户名!' }]},
+          realname:{rules: [{ required: true, message: '请输入真实姓名!' }]},
+          nickname:{rules: [{ required: true, message: '请输入昵称!' }]},
+          password:{rules: [{ required: true, message: '请输入密码!' }]},
+          salt:{rules: [{ required: true, message: '请输入密码盐!' }]},
+          email:{rules: [{ required: true, message: '请输入电子邮箱!' }]},
+          mobile:{rules: [{ required: true, message: '请输入手机号!' }]},
+          avatar:{rules: [{ required: true, message: '请输入头像!' }]},
+          level:{rules: [{ required: true, message: '请输入等级!' }]},
+          sex:{rules: [{ required: true, message: '请输入性别  0/男,1/女!' }]},
+          bio:{rules: [{ required: true, message: '请输入格言!' }]},
+          money:{rules: [{ required: true, message: '请输入余额!' }]},
+          score:{rules: [{ required: true, message: '请输入积分!' }]},
+          successIons:{rules: [{ required: true, message: '请输入连续登录天数!' }]},
+          maxsuccessIons:{rules: [{ required: true, message: '请输入最大连续登录天数!' }]},
+          prevTime:{rules: [{ required: true, message: '请输入上次登录时间!' }]},
+          loginTime:{rules: [{ required: true, message: '请输入登录时间!' }]},
+          loginip:{rules: [{ required: true, message: '请输入登录IP!' }]},
+          loginfailure:{rules: [{ required: true, message: '请输入失败次数!' }]},
+          joinip:{rules: [{ required: true, message: '请输入加入IP!' }]},
+          token:{rules: [{ required: true, message: '请输入Token!' }]},
+          status:{rules: [{ required: true, message: '请输入状态(1：正常  2：冻结 ）!' }]},
+          delFlag:{rules: [{ required: true, message: '请输入删除状态（0，正常，1已删除）!' }]},
+          verification:{rules: [{ required: true, message: '请输入验证!' }]},
+          userId:{rules: [{ required: true, message: '请输入userId!' }]},
         },
         url: {
           add: "/user/add",
@@ -280,7 +280,7 @@
         this.visible = true;
         this.$nextTick(() => {
           this.form.setFieldsValue(pick(this.model,'groupId','username','realname','nickname','password','salt','email','mobile','avatar','level','sex','bio','money','score','successIons','maxsuccessIons','prevTime','loginTime','loginip','loginfailure','joinip','token','status','delFlag','verification','userId','expiretime','expiresIn','qqId','wxId'))
-		  //时间格式化
+          //时间格式化
           this.form.setFieldsValue({birthday:this.model.birthday?moment(this.model.birthday):null})
           this.form.setFieldsValue({joinTime:this.model.joinTime?moment(this.model.joinTime):null})
         });
@@ -303,13 +303,13 @@
               method = 'post';
             }else{
               httpurl+=this.url.edit;
-               method = 'put';
+              method = 'put';
             }
             let formData = Object.assign(this.model, values);
             //时间格式化
             formData.birthday = formData.birthday?formData.birthday.format('YYYY-MM-DD HH:mm:ss'):null;
             formData.joinTime = formData.joinTime?formData.joinTime.format('YYYY-MM-DD HH:mm:ss'):null;
-            
+
             console.log(formData)
             httpAction(httpurl,formData,method).then((res)=>{
               if(res.success){
@@ -338,7 +338,7 @@
 </script>
 
 <style lang="less" scoped>
-/** Button按钮间距 */
+  /** Button按钮间距 */
   .ant-btn {
     margin-left: 30px;
     margin-bottom: 30px;
